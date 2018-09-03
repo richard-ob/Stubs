@@ -42,5 +42,9 @@
   "artist": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "event": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }
