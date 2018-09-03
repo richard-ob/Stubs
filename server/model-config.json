@@ -38,5 +38,9 @@
   "venue": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "artist": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }
