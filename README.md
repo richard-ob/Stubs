@@ -1,10 +1,13 @@
 # Stubs
 An application to remember all the gigs you've ever been to.
 
-### Technology & Tooling
+### Stack
 * React
 * NodeJS
 * LoopBack
+* MongoDB
+
+### Tooling
 * npm
 
 ### Running
