@@ -18,7 +18,24 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "artists": {
+      "type": "hasMany",
+      "model": "artist",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "venues": {
+      "type": "hasOne",
+      "model": "venue",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
   "acls": [],
   "methods": {}
 }
