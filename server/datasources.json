@@ -1,0 +1,12 @@
+{
+  "mongoDS": {
+    "host": "localhost",
+    "port": 27017,
+    "url": "mongodb://localhost:27017/stubs",
+    "database": "stubs",
+    "password": "",
+    "name": "mongoDS",
+    "user": "",
+    "connector": "mongodb"
+  }
+}
