@@ -1,0 +1,41 @@
+{
+  "name": "event",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "endDate": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "artists": {
+      "type": "hasMany",
+      "model": "artist",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "venues": {
+      "type": "hasOne",
+      "model": "venue",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
