@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { EventList } from './components/EventList/EventList';
 import './App.css';
+import { EventEditor } from './components/EventEditor/EventEditor';
 
 class App extends Component {
   render() {
@@ -10,7 +11,12 @@ class App extends Component {
           <h1 className="App-title">Welcome to Stubs</h1>
         </header>
         <article>
+          <h3>Events</h3>
           <EventList />
+        </article>
+        <article>
+          <h3>Event Editor</h3>
+          <EventEditor />
         </article>
       </div>
     );
