@@ -13,31 +13,44 @@ export class EventEditor extends Component {
     constructor() {
         super();
         this.state = {
-            name: '',
-            startDate: '',
-            endDate: '',
-            venue: [
-                {
-                    location: '',
-                    name: ''
-                }
-            ],
-            artists: [
+            validationError: '',
+            event: {
+                name: '',
+                startDate: new Date(),
+                endDate: null,
+                venue: [
+                    {
+                        location: '',
+                        name: ''
+                    }
+                ],
+                artists: [
 
-            ]
+                ]
+            }
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleSubmit(event) {
-        alert(this.state.name);
+        console.log(this.state);
+        fetch('http://localhost:3000/api/events', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.state.event),
+        });
         event.preventDefault();
     }
 
     handleChange(event) {
+        const updatedEvent = { ...this.state.event };
+        updatedEvent[event.target.name] = event.target.value;
         this.setState({
-            [event.target.name]: event.target.value
+            event: updatedEvent
         });
     }
 
@@ -53,13 +66,32 @@ export class EventEditor extends Component {
                         name="name"
                         label="Name"
                         margin="normal"
-                        value={this.state.name}
+                        value={this.state.event.name}
+                        onChange={this.handleChange}
+                    />
+                    <TextField
+                        id="startDate"
+                        name="startDate"
+                        label="Start Date"
+                        margin="normal"
+                        type="date"
+                        value={this.state.event.startDate}
+                        onChange={this.handleChange}
+                    />
+                    <TextField
+                        id="endDate"
+                        name="endDate"
+                        label="End Date"
+                        margin="normal"
+                        type="date"
+                        value={this.state.event.endDate}
                         onChange={this.handleChange}
                     />
                     <Button variant="contained" color="secondary" type="submit">
                         Save Event
                 </Button>
                 </form>
+                <p>{this.state.validationError}</p>
             </ExpansionPanelDetails>
         </ExpansionPanel>;
     }
