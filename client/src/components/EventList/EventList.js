@@ -40,8 +40,8 @@ export class EventList extends Component {
                                     <TableCell component="th" scope="row">
                                         {row.name}
                                     </TableCell>
-                                    <TableCell date>{row.startDate}</TableCell>
-                                    <TableCell date>{row.endDate}</TableCell>
+                                    <TableCell date>{new Date(row.startDate).toLocaleDateString()}</TableCell>
+                                    <TableCell date>{new Date(row.endDate).toLocaleDateString()}</TableCell>
                                 </TableRow>
                             );
                         })}
