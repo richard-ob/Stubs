@@ -5,6 +5,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Button, IconButton } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 export class EventList extends Component {
@@ -26,6 +28,11 @@ export class EventList extends Component {
             .then(events => this.setState({ events: events }));
     }
 
+    deleteEvent(eventId) {
+        fetch(`http://localhost:3000/api/events/${eventId}`, { method: 'DELETE' })
+            .then(() => this.fetchEventList());
+    }
+
     generateEventList() {
         return (
             <Paper>
@@ -35,6 +42,7 @@ export class EventList extends Component {
                             <TableCell>Name</TableCell>
                             <TableCell date>Start Date</TableCell>
                             <TableCell date>End Date</TableCell>
+                            <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -46,6 +54,11 @@ export class EventList extends Component {
                                     </TableCell>
                                     <TableCell date>{new Date(row.startDate).toLocaleDateString()}</TableCell>
                                     <TableCell date>{new Date(row.endDate).toLocaleDateString()}</TableCell>
+                                    <TableCell>
+                                        <IconButton color="secondary" onClick={(e) => this.deleteEvent(row.id, e)}>
+                                            <DeleteIcon fontSize="small" />
+                                        </IconButton >
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}
