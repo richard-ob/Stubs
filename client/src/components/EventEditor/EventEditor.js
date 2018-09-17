@@ -42,8 +42,7 @@ export class EventEditor extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(this.state.event),
-        });
-        this.props.eventAdded();
+        }).then(() => this.props.eventAdded());
         event.preventDefault();
     }
 
@@ -88,7 +87,7 @@ export class EventEditor extends Component {
                         value={this.state.event.endDate}
                         onChange={this.handleChange}
                     />
-                    <Button variant="contained" color="secondary" type="submit">
+                    <Button variant="contained" color="primary" type="submit">
                         Save Event
                 </Button>
                 </form>
