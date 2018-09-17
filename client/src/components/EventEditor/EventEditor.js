@@ -43,6 +43,7 @@ export class EventEditor extends Component {
             },
             body: JSON.stringify(this.state.event),
         });
+        this.props.eventAdded();
         event.preventDefault();
     }
 
@@ -61,7 +62,7 @@ export class EventEditor extends Component {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                    <TextField
+                    <input
                         id="name"
                         name="name"
                         label="Name"
@@ -69,7 +70,7 @@ export class EventEditor extends Component {
                         value={this.state.event.name}
                         onChange={this.handleChange}
                     />
-                    <TextField
+                    <input
                         id="startDate"
                         name="startDate"
                         label="Start Date"
@@ -78,7 +79,7 @@ export class EventEditor extends Component {
                         value={this.state.event.startDate}
                         onChange={this.handleChange}
                     />
-                    <TextField
+                    <input
                         id="endDate"
                         name="endDate"
                         label="End Date"

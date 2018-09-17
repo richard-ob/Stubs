@@ -4,6 +4,15 @@ import './App.css';
 import { EventEditor } from './components/EventEditor/EventEditor';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.eventListComponent = React.createRef();
+  }
+
+  eventAdded() {
+    this.eventListComponent.current.fetchEventList();
+  }
+
   render() {
     return (
       <div className="App">
@@ -12,11 +21,11 @@ class App extends Component {
         </header>
         <article>
           <h3>Events</h3>
-          <EventList />
+          <EventList ref={this.eventListComponent} />
         </article>
         <article>
           <h3>Event Editor</h3>
-          <EventEditor />
+          <EventEditor eventAdded={this.eventAdded.bind(this)} />
         </article>
       </div>
     );

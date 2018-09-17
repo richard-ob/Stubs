@@ -17,6 +17,10 @@ export class EventList extends Component {
     }
 
     componentDidMount() {
+        this.fetchEventList();
+    }
+
+    fetchEventList() {
         fetch("http://localhost:3000/api/events")
             .then(res => res.json())
             .then(events => this.setState({ events: events }));
