@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Paper, Grid } from '@material-ui/core';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+import DatePicker from 'material-ui-pickers/DatePicker';
 
 
 export class EventEditor extends Component {
@@ -12,7 +15,7 @@ export class EventEditor extends Component {
             event: {
                 name: '',
                 startDate: new Date(),
-                endDate: null,
+                endDate: new Date(),
                 venue: [
                     {
                         location: '',
@@ -50,6 +53,18 @@ export class EventEditor extends Component {
         });
     }
 
+    handleEndDateChange = date => {
+        const updatedEvent = { ...this.state.event };
+        updatedEvent.endDate = date;
+        this.setState({ event: updatedEvent });
+    };
+
+    handleStartDateChange = date => {
+        const updatedEvent = { ...this.state.event };
+        updatedEvent.startDate = date;
+        this.setState({ event: updatedEvent });
+    };
+
     render() {
 
         const styles = {
@@ -78,28 +93,30 @@ export class EventEditor extends Component {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
-                                <TextField
-                                    id="startDate"
-                                    name="startDate"
-                                    label="Start Date"
-                                    margin="normal"
-                                    type="date"
-                                    value={this.state.event.startDate}
-                                    onChange={this.handleChange}
-                                    fullWidth
-                                />
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <DatePicker
+                                        id="startDate"
+                                        name="startDate"
+                                        label="Start Date"
+                                        value={this.state.event.startDate}
+                                        onChange={this.handleStartDateChange}
+                                        margin="normal"
+                                        fullWidth
+                                    />
+                                </MuiPickersUtilsProvider>
                             </Grid>
                             <Grid item xs={12} sm={3}>
-                                <TextField
-                                    id="endDate"
-                                    name="endDate"
-                                    label="End Date"
-                                    margin="normal"
-                                    type="date"
-                                    value={this.state.event.endDate}
-                                    onChange={this.handleChange}
-                                    fullWidth
-                                />
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <DatePicker
+                                        id="endDate"
+                                        name="endDate"
+                                        label="End Date"
+                                        value={this.state.event.endDate}
+                                        onChange={this.handleEndDateChange}
+                                        margin="normal"
+                                        fullWidth
+                                    />
+                                </MuiPickersUtilsProvider>
                             </Grid>
                             <Grid item xs={12} sm={3} style={styles.gridItemButton}>
                                 <Button variant="contained" color="primary" type="submit" fullWidth>
