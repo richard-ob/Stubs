@@ -24,7 +24,7 @@ class App extends Component {
           <EventList ref={this.eventListComponent} />
         </article>
         <article>
-          <h3>Event Editor</h3>
+          <h3>Create Event</h3>
           <EventEditor eventAdded={this.eventAdded.bind(this)} />
         </article>
       </div>

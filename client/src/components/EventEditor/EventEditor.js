@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { Paper, Grid } from '@material-ui/core';
 
 
 export class EventEditor extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -34,7 +29,6 @@ export class EventEditor extends Component {
     }
 
     handleSubmit(event) {
-        console.log(this.state);
         fetch('http://localhost:3000/api/events', {
             method: 'POST',
             headers: {
@@ -42,7 +36,9 @@ export class EventEditor extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(this.state.event),
-        }).then(() => this.props.eventAdded());
+        }).then(() => {
+            this.props.eventAdded();
+        });
         event.preventDefault();
     }
 
@@ -55,44 +51,65 @@ export class EventEditor extends Component {
     }
 
     render() {
-        return <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Create Event</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-                <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                    <input
-                        id="name"
-                        name="name"
-                        label="Name"
-                        margin="normal"
-                        value={this.state.event.name}
-                        onChange={this.handleChange}
-                    />
-                    <input
-                        id="startDate"
-                        name="startDate"
-                        label="Start Date"
-                        margin="normal"
-                        type="date"
-                        value={this.state.event.startDate}
-                        onChange={this.handleChange}
-                    />
-                    <input
-                        id="endDate"
-                        name="endDate"
-                        label="End Date"
-                        margin="normal"
-                        type="date"
-                        value={this.state.event.endDate}
-                        onChange={this.handleChange}
-                    />
-                    <Button variant="contained" color="primary" type="submit">
-                        Save Event
-                </Button>
-                </form>
-                <p>{this.state.validationError}</p>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>;
+
+        const styles = {
+            container: {
+                padding: '15px'
+            },
+            gridItemButton: {
+                'margin-top': '25px'
+            }
+        };
+
+        return (
+            <div>
+                <Paper style={styles.container} elevation={1}>
+                    <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                        <Grid container spacing={24}>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    id="name"
+                                    name="name"
+                                    label="Name"
+                                    margin="normal"
+                                    value={this.state.event.name}
+                                    onChange={this.handleChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    id="startDate"
+                                    name="startDate"
+                                    label="Start Date"
+                                    margin="normal"
+                                    type="date"
+                                    value={this.state.event.startDate}
+                                    onChange={this.handleChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    id="endDate"
+                                    name="endDate"
+                                    label="End Date"
+                                    margin="normal"
+                                    type="date"
+                                    value={this.state.event.endDate}
+                                    onChange={this.handleChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3} style={styles.gridItemButton}>
+                                <Button variant="contained" color="primary" type="submit" fullWidth>
+                                    Save Event
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </Paper>
+            </div >
+        );
     }
 }
