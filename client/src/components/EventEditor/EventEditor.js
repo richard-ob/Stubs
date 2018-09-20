@@ -5,7 +5,25 @@ import { Paper, Grid } from '@material-ui/core';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import DatePicker from 'material-ui-pickers/DatePicker';
+import gbLocale from 'date-fns/locale/en-GB';
+import format from 'date-fns/format';
+import ChipInput from 'material-ui-chip-input'
 
+class LocalisedUtils extends DateFnsUtils {
+    constructor() {
+        super();
+        super.datePickerFormat = 'Do MMMM YYYY';
+    }
+    getDatePickerHeaderText(date) {
+        return format(date, 'Do MMMM YYYY', { locale: gbLocale });
+    }
+    getDateTimePickerHeaderText(date) {
+        return format(date, 'Do MMMM YYYY', { locale: gbLocale });
+    }
+    getCalendarHeaderText(date) {
+        return format(date, 'Do MMMM YYYY', { locale: gbLocale });
+    }
+}
 
 export class EventEditor extends Component {
     constructor() {
@@ -39,9 +57,25 @@ export class EventEditor extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(this.state.event),
-        }).then(() => {
-            this.props.eventAdded();
-        });
+        })
+            .then((response) => response.json())
+            .then((event) => {
+                const artistPromises = new Array();
+                this.state.event.artists.forEach(artist => {
+                    const artistLink = { name: artist, eventId: event.id };
+                    artistPromises.push(fetch(`http://localhost:3000/api/artists`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(artistLink),
+                    }));
+                });
+                Promise.all(artistPromises).then(() => {
+                    this.props.eventAdded()
+                });
+            });
         event.preventDefault();
     }
 
@@ -53,8 +87,16 @@ export class EventEditor extends Component {
         });
     }
 
+    handleArtistsChange = artists => {
+        const updatedEvent = { ...this.state.event };
+        console.log(artists);
+        updatedEvent.artists = artists;
+        this.setState({ event: updatedEvent });
+    };
+
     handleEndDateChange = date => {
         const updatedEvent = { ...this.state.event };
+        console.log(updatedEvent);
         updatedEvent.endDate = date;
         this.setState({ event: updatedEvent });
     };
@@ -81,23 +123,18 @@ export class EventEditor extends Component {
                 <Paper style={styles.container} elevation={1}>
                     <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                         <Grid container spacing={24}>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
-                                    id="name"
-                                    name="name"
-                                    label="Name"
-                                    margin="normal"
-                                    value={this.state.event.name}
-                                    onChange={this.handleChange}
-                                    fullWidth
+                            <Grid item xs={12} sm={2}>
+                                <ChipInput
+                                    onChange={this.handleArtistsChange}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid item xs={12} sm={2}>
+                                <MuiPickersUtilsProvider utils={LocalisedUtils}>
                                     <DatePicker
                                         id="startDate"
                                         name="startDate"
                                         label="Start Date"
+                                        clearable
                                         value={this.state.event.startDate}
                                         onChange={this.handleStartDateChange}
                                         margin="normal"
@@ -105,12 +142,13 @@ export class EventEditor extends Component {
                                     />
                                 </MuiPickersUtilsProvider>
                             </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid item xs={12} sm={2}>
+                                <MuiPickersUtilsProvider utils={LocalisedUtils}>
                                     <DatePicker
                                         id="endDate"
                                         name="endDate"
                                         label="End Date"
+                                        clearable
                                         value={this.state.event.endDate}
                                         onChange={this.handleEndDateChange}
                                         margin="normal"
