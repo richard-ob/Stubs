@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Button, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Chip from '@material-ui/core/Chip';
 
 
 export class EventList extends Component {
@@ -23,7 +24,7 @@ export class EventList extends Component {
     }
 
     fetchEventList() {
-        fetch("http://localhost:3000/api/events")
+        fetch("http://localhost:3000/api/events?filter=%7B%20%22include%22%3A%20%22artists%22%7D")
             .then(res => res.json())
             .then(events => this.setState({ events: events }));
     }
@@ -39,7 +40,9 @@ export class EventList extends Component {
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <TableCell>Artists</TableCell>
                             <TableCell>Name</TableCell>
+                            <TableCell>Venue</TableCell>
                             <TableCell date>Start Date</TableCell>
                             <TableCell date>End Date</TableCell>
                             <TableCell>Actions</TableCell>
@@ -49,8 +52,14 @@ export class EventList extends Component {
                         {this.state.events.map(row => {
                             return (
                                 <TableRow key={row.id}>
+                                    <TableCell>
+                                        {row.artists.map(artist => <Chip label={artist.name} />)}
+                                    </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        {row.venue.name}
                                     </TableCell>
                                     <TableCell date>{new Date(row.startDate).toLocaleDateString()}</TableCell>
                                     <TableCell date>{new Date(row.endDate).toLocaleDateString()}</TableCell>
