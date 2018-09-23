@@ -24,7 +24,7 @@ export class EventList extends Component {
     }
 
     fetchEventList() {
-        fetch("http://localhost:3000/api/events?filter=%7B%20%22include%22%3A%20%22artists%22%7D")
+        fetch('http://localhost:3000/api/events?filter=%7B%22include%22%3A%20%5B%22venues%22%2C%20%22artists%22%5D%7D')
             .then(res => res.json())
             .then(events => this.setState({ events: events }));
     }
@@ -41,10 +41,9 @@ export class EventList extends Component {
                     <TableHead>
                         <TableRow>
                             <TableCell>Artists</TableCell>
-                            <TableCell>Name</TableCell>
+                            <TableCell>Event Name</TableCell>
                             <TableCell>Venue</TableCell>
-                            <TableCell date>Start Date</TableCell>
-                            <TableCell date>End Date</TableCell>
+                            <TableCell date>Date</TableCell>
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -59,10 +58,9 @@ export class EventList extends Component {
                                         {row.name}
                                     </TableCell>
                                     <TableCell>
-                                        {row.venue.name}
+                                        {row.venues ? row.venues.name + ', ' + row.venues.location : ''}
                                     </TableCell>
-                                    <TableCell date>{new Date(row.startDate).toLocaleDateString()}</TableCell>
-                                    <TableCell date>{new Date(row.endDate).toLocaleDateString()}</TableCell>
+                                    <TableCell date>{new Date(row.startDate).toLocaleDateString()} {row.endDate !== null ? '-' + new Date(row.endDate).toLocaleDateString() : ''} </TableCell>
                                     <TableCell>
                                         <IconButton color="secondary" onClick={(e) => this.deleteEvent(row.id, e)}>
                                             <DeleteIcon fontSize="small" />
