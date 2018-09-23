@@ -46,7 +46,7 @@ export class EventEditor extends Component {
             }
         }
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleVenueChange = this.handleVenueChange.bind(this);
     }
 
     handleSubmit(event) {
@@ -61,6 +61,15 @@ export class EventEditor extends Component {
             .then((response) => response.json())
             .then((event) => {
                 const artistPromises = new Array();
+                const venueLink = { name: this.state.event.venue.name, location: this.state.event.venue.location, eventId: event.id };
+                artistPromises.push(fetch(`http://localhost:3000/api/venues`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(venueLink),
+                }));
                 this.state.event.artists.forEach(artist => {
                     const artistLink = { name: artist, eventId: event.id };
                     artistPromises.push(fetch(`http://localhost:3000/api/artists`, {
@@ -79,9 +88,9 @@ export class EventEditor extends Component {
         event.preventDefault();
     }
 
-    handleChange(event) {
+    handleVenueChange(event) {
         const updatedEvent = { ...this.state.event };
-        updatedEvent[event.target.name] = event.target.value;
+        updatedEvent.venue[event.target.name] = event.target.value;
         this.setState({
             event: updatedEvent
         });
@@ -89,14 +98,12 @@ export class EventEditor extends Component {
 
     handleArtistsChange = artists => {
         const updatedEvent = { ...this.state.event };
-        console.log(artists);
         updatedEvent.artists = artists;
         this.setState({ event: updatedEvent });
     };
 
     handleEndDateChange = date => {
         const updatedEvent = { ...this.state.event };
-        console.log(updatedEvent);
         updatedEvent.endDate = date;
         this.setState({ event: updatedEvent });
     };
@@ -156,7 +163,31 @@ export class EventEditor extends Component {
                                     />
                                 </MuiPickersUtilsProvider>
                             </Grid>
-                            <Grid item xs={12} sm={3} style={styles.gridItemButton}>
+                            <Grid item xs={12} sm={2}>
+                                <TextField
+                                    id="name"
+                                    name="name"
+                                    label="Venue Name"
+                                    margin="normal"
+                                    type="text"
+                                    value={this.state.event.venue.name}
+                                    onChange={this.handleVenueChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={2}>
+                                <TextField
+                                    id="location"
+                                    name="location"
+                                    label="Venue Location"
+                                    margin="normal"
+                                    type="text"
+                                    value={this.state.event.venue.location}
+                                    onChange={this.handleVenueChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={2} style={styles.gridItemButton}>
                                 <Button variant="contained" color="primary" type="submit" fullWidth>
                                     Save Event
                                 </Button>
