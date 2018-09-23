@@ -47,6 +47,7 @@ export class EventEditor extends Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleVenueChange = this.handleVenueChange.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
     }
 
     handleSubmit(event) {
@@ -88,6 +89,14 @@ export class EventEditor extends Component {
         event.preventDefault();
     }
 
+    handleNameChange(event) {
+        const updatedEvent = { ...this.state.event };
+        updatedEvent.name = event.target.value;
+        this.setState({
+            event: updatedEvent
+        });
+    }
+
     handleVenueChange(event) {
         const updatedEvent = { ...this.state.event };
         updatedEvent.venue[event.target.name] = event.target.value;
@@ -121,7 +130,14 @@ export class EventEditor extends Component {
                 padding: '15px'
             },
             gridItemButton: {
-                'margin-top': '25px'
+                'margin-top': '25px',
+                'text-align': 'right'
+            },
+            artistsChips: {
+                'padding-top': '40px'
+            },
+            button: {
+                'float': 'right'
             }
         };
 
@@ -130,9 +146,21 @@ export class EventEditor extends Component {
                 <Paper style={styles.container} elevation={1}>
                     <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                         <Grid container spacing={24}>
-                            <Grid item xs={12} sm={2}>
+                            <Grid item xs={12} sm={2} style={styles.artistsChips}>
                                 <ChipInput
-                                    onChange={this.handleArtistsChange}
+                                    onChange={this.handleArtistsChange} placeholder="Artists"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={2}>
+                                <TextField
+                                    id="eventName"
+                                    name="name"
+                                    label="Event Name"
+                                    margin="normal"
+                                    type="text"
+                                    value={this.state.event.name}
+                                    onChange={this.handleNameChange}
+                                    fullWidth
                                 />
                             </Grid>
                             <Grid item xs={12} sm={2}>
@@ -165,7 +193,7 @@ export class EventEditor extends Component {
                             </Grid>
                             <Grid item xs={12} sm={2}>
                                 <TextField
-                                    id="name"
+                                    id="venueName"
                                     name="name"
                                     label="Venue Name"
                                     margin="normal"
@@ -187,8 +215,8 @@ export class EventEditor extends Component {
                                     fullWidth
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={2} style={styles.gridItemButton}>
-                                <Button variant="contained" color="primary" type="submit" fullWidth>
+                            <Grid item xs={12} sm={12} style={styles.gridItemButton}>
+                                <Button variant="contained" color="primary" type="submit" style={styles.button}>
                                     Save Event
                                 </Button>
                             </Grid>
